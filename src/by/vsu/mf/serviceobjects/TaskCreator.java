@@ -3,7 +3,7 @@ package by.vsu.mf.serviceobjects;
 /**
  * Интерфейс создателя задачи
  * 
- * @author special
+ * @author Landarski Yauhen
  * 
  */
 public interface TaskCreator {

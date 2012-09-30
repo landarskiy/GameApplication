@@ -1,13 +1,16 @@
 package by.vsu.mf.location;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Глобальная карта
+ * TODO: карты можно хранить в двухмерном массиве, как граф. Удобно определять куда можно дойти.
  * 
- * @author special
+ * @author Landarski Yauhen
  * 
  */
-public interface GlobalMap {
-	public Collection<Map> getMaps();
+public class GlobalMap {
+	private List<Map> maps;
+	
 }

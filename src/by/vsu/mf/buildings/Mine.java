@@ -1,18 +1,58 @@
 package by.vsu.mf.buildings;
 
+import by.vsu.mf.player.Player;
+import by.vsu.mf.player.ResourceStorage.Resource;
+
 /**
  * Объект-шахта добычи материалов
  * 
- * @author special
+ * @author Landarski Yauhen
  * 
  */
-public interface Mine {	
+public class Mine extends NotDestriyedBuilding{
 
-	public int getCurrentResourceCount();
+	private Resource mineType;
 
-	public int getMineType();
+	private int currentResourceCount;
 
-	public int getResource(int ammount);	
+	public Mine (Player owner) {
+		super(owner);
+	}
+	
+	public Mine (Player owner, Resource mineType, int resourceCount) {
+		this(owner);
+		this.mineType = mineType;
+		this.currentResourceCount = resourceCount;
+	}	
 
-	public boolean isEmpty();
+	public int getResource(int ammount) {
+		if (currentResourceCount < ammount) {
+			ammount = currentResourceCount;
+			currentResourceCount = 0;
+		} else {
+			currentResourceCount -= ammount;
+		}
+		return ammount;
+	}
+
+	public boolean isEmpty() {
+		return currentResourceCount == 0;
+	}
+
+	public Resource getMineType() {
+		return mineType;
+	}
+
+	public void setMineType(Resource mineType) {
+		this.mineType = mineType;
+	}
+
+	public int getCurrentResourceCount() {
+		return currentResourceCount;
+	}
+
+	public void setCurrentResourceCount(int currentResourceCount) {
+		this.currentResourceCount = currentResourceCount;
+	}
+		
 }

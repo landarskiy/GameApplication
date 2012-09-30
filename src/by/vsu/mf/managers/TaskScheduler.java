@@ -4,8 +4,9 @@ import by.vsu.mf.serviceobjects.Task;
 
 /**
  * Планировщик задач. Отвечает за выполнение задач в срок.
+ * TODO: реализовать как сингелтон
  * 
- * @author special
+ * @author Landarski Yauhen
  * 
  */
 public interface TaskScheduler extends Runnable {

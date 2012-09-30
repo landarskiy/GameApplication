@@ -3,7 +3,7 @@ package by.vsu.mf.serviceobjects;
 /**
  * Объект-задача
  * 
- * @author special
+ * @author Landarski Yauhen
  * 
  */
 public interface Task extends Comparable<Task> {

@@ -1,11 +1,20 @@
 package by.vsu.mf.player;
 
 /**
- * Интерфейс игрока
+ * Базовый класс игрока
  * 
- * @author special
+ * @author Landarski Yauhen
  * 
  */
-public interface Player {
-	public Resources getResources();
+public class Player {
+	private ResourceStorage resources;
+
+	public ResourceStorage getResources() {
+		return resources;
+	}
+
+	public void setResources(ResourceStorage resources) {
+		this.resources = resources;
+	}
+
 }

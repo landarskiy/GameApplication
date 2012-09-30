@@ -1,12 +1,27 @@
 package by.vsu.mf.buildings;
 
+import by.vsu.mf.player.Player;
+
 /**
  * Базовый предок для всех атакующих сооружений
  * 
- * @author special
- * 
+ * @author Landarski Yauhen
+ *
  */
-public interface AttackBuilding extends Building {
+public class AttackBuilding extends Building {
 
-	public int getAttackStrength();
+	private int strength;
+
+	public AttackBuilding(Player owner) {
+		super(owner);
+	}
+
+	public AttackBuilding(Player owner, int strength) {
+		this(owner);
+		this.strength = strength;
+	}
+
+	public int getAttackStrength() {
+		return strength;
+	}
 }
