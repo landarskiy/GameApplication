@@ -1,5 +1,8 @@
 package by.vsu.mf.managers;
 
+import java.util.PriorityQueue;
+import java.util.Stack;
+
 import by.vsu.mf.serviceobjects.Task;
 
 /**
@@ -9,12 +12,47 @@ import by.vsu.mf.serviceobjects.Task;
  * @author Landarski Yauhen
  * 
  */
-public interface TaskScheduler extends Runnable {
-	public void addTask(Task task);
+public class TaskScheduler implements Runnable {
+	
+	private PriorityQueue<Task> tasks;
+	private boolean isRunned;
+	private Stack<Task> executableTasks;
+	
+	public TaskScheduler() {
+		this.tasks = new PriorityQueue<Task>();
+		this.executableTasks = new Stack<Task>();
+		this.isRunned = true;
+	}
+	
+	public void addTask(Task task) {
+		tasks.add(task);
+	}
 
-	public void removeTask(Task task);
+	public void removeTask(Task task) {
+		tasks.remove(task);
+	}
 	
-	public void executeFinishedTasks();
+	private void executeFinishedTasks() {
+		long currentTime = System.currentTimeMillis();
+		while(!tasks.isEmpty() && tasks.peek().getPerformanceTime()<=currentTime) {
+			executableTasks.push(tasks.poll());
+		}
+		Task executeTask;
+		while(!executableTasks.isEmpty()) {
+			executeTask = executableTasks.pop();
+			executeTask.execute();
+			executeTask.getTaskCreator().notifyAboutPerformance();
+		}
+	}		
+
+	public void run() {
+		while(isRunned) {
+			//Thread.sleep(100);
+			executeFinishedTasks();
+		}		
+	}
 	
-	public boolean isExistFinishedTask();
+	public void terminate() {
+		this.isRunned = false;
+	}
 }

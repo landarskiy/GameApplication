@@ -1,5 +1,7 @@
 package by.vsu.mf.buildings;
 
+import by.vsu.mf.buildings.resourceextract.ResourceExtractor;
+import by.vsu.mf.buildings.resourceextract.ResourceExtractorBuilder;
 import by.vsu.mf.player.Player;
 import by.vsu.mf.player.ResourceStorage.Resource;
 
@@ -14,6 +16,10 @@ public class Mine extends NotDestriyedBuilding{
 	private Resource mineType;
 
 	private int currentResourceCount;
+	
+	private int workerCount;
+	
+	private ResourceExtractor extractor;
 
 	public Mine (Player owner) {
 		super(owner);
@@ -23,9 +29,12 @@ public class Mine extends NotDestriyedBuilding{
 		this(owner);
 		this.mineType = mineType;
 		this.currentResourceCount = resourceCount;
+		this.workerCount = 0;
+		this.extractor = ResourceExtractorBuilder.build(mineType);
 	}	
 
-	public int getResource(int ammount) {
+	public int extractResource() {
+		int ammount = extractor.extract(workerCount);
 		if (currentResourceCount < ammount) {
 			ammount = currentResourceCount;
 			currentResourceCount = 0;
@@ -54,5 +63,13 @@ public class Mine extends NotDestriyedBuilding{
 	public void setCurrentResourceCount(int currentResourceCount) {
 		this.currentResourceCount = currentResourceCount;
 	}
+
+	public int getWorkerCount() {
+		return workerCount;
+	}
+
+	public void setWorkerCount(int workerCount) {
+		this.workerCount = workerCount;
+	}		
 		
 }

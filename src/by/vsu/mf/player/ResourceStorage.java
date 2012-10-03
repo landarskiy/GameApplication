@@ -23,15 +23,14 @@ public class ResourceStorage {
 
 	public ResourceStorage(int[] resources) {
 		this.resources = resources;
-		int k = resources[Resource.GOLD.ordinal()];
 	}
 
 	public int[] getResources() {
 		return this.resources;
 	}
 
-	public int getResource(int resourceType) {
-		return resources[resourceType];
+	public int getResource(Resource resourceType) {
+		return resources[resourceType.ordinal()];
 	}
 
 	public void setResource(Resource resourceType, int count) {
