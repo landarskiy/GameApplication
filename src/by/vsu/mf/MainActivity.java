@@ -1,8 +1,8 @@
 package by.vsu.mf;
 
 import by.vsu.mf.R;
-import by.vsu.mf.managers.GameManager;
-import by.vsu.mf.player.ResourceStorage;
+import by.vsu.mf.model.managers.GameManager;
+import by.vsu.mf.model.player.ResourceStorage;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
