@@ -12,11 +12,14 @@ public abstract class Task implements Comparable<Task> {
 
 	private long performanceTime;
 	
+	private long creationTime;
+	
 	private TaskCreator taskCreator;
 	
 	public Task (long performanceTime, TaskCreator taskCreator) {
 		this.performanceTime = performanceTime;
 		this.taskCreator = taskCreator;
+		this.creationTime = System.currentTimeMillis();
 	}
 	
 	public abstract void execute();
@@ -46,6 +49,9 @@ public abstract class Task implements Comparable<Task> {
 	public void setTaskCreator(TaskCreator taskCreator) {
 		this.taskCreator = taskCreator;
 	}
-	
-	
+
+	public long getCreationTime() {
+		return creationTime;
+	}
+
 }

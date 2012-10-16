@@ -6,24 +6,26 @@ import java.util.Stack;
 import by.vsu.mf.model.serviceobjects.Task;
 
 /**
- * Планировщик задач. Отвечает за выполнение задач в срок.
+ * Планировщик задач. Отвечает за выполнение долгосрочных задач в срок. 
  * TODO: реализовать как сингелтон
  * 
  * @author Landarski Yauhen
  * 
  */
 public class TaskScheduler implements Runnable {
-	
-	private PriorityQueue<Task> tasks;
-	private boolean isRunned;
+
+	private PriorityQueue<Task> tasks;	
 	private Stack<Task> executableTasks;
-	
+	private boolean running;
+	private long interval;
+
 	public TaskScheduler() {
 		this.tasks = new PriorityQueue<Task>();
 		this.executableTasks = new Stack<Task>();
-		this.isRunned = true;
+		this.running = true;
+		this.interval = 100;
 	}
-	
+
 	public void addTask(Task task) {
 		tasks.add(task);
 	}
@@ -31,28 +33,34 @@ public class TaskScheduler implements Runnable {
 	public void removeTask(Task task) {
 		tasks.remove(task);
 	}
-	
+
 	private void executeFinishedTasks() {
 		long currentTime = System.currentTimeMillis();
-		while(!tasks.isEmpty() && tasks.peek().getPerformanceTime()<=currentTime) {
+		while (!tasks.isEmpty()
+				&& tasks.peek().getPerformanceTime() <= currentTime) {
 			executableTasks.push(tasks.poll());
 		}
 		Task executeTask;
-		while(!executableTasks.isEmpty()) {
+		while (!executableTasks.isEmpty()) {
 			executeTask = executableTasks.pop();
 			executeTask.execute();
-			executeTask.getTaskCreator().notifyAboutPerformance();
+			executeTask.getTaskCreator().notifyAboutPerformance(executeTask);
 		}
-	}		
+	}
 
 	public void run() {
-		while(isRunned) {
-			//Thread.sleep(100);
-			executeFinishedTasks();
-		}		
+		while (running) {
+			try {
+				Thread.sleep(interval);
+				executeFinishedTasks();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+
+		}
 	}
-	
+
 	public void terminate() {
-		this.isRunned = false;
+		this.running = false;
 	}
 }

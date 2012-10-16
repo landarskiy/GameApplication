@@ -10,42 +10,20 @@ import by.vsu.mf.model.player.ResourceStorage.Resource;
  * 
  */
 public class Warrior {
-	public enum Weapon {
-		SWORD(10, 0), 
-		SWORD_BOARD(10, 3);
-
-		private final int attack;
-		private final int protection;
-
-		private Weapon(int attack, int protection) {
-			this.attack = attack;
-			this.protection = protection;
-		}
-
-		public int getAttack() {
-			return attack;
-		}
-
-		public int getProtection() {
-			return protection;
-		}
+	public enum WarriorType {
+		FIRST_TYPE, 
+		SECOND_TYPE
 	}
 
-	private Weapon weapon;
+	private WarriorType warriorType;
 	private int health;
+	private int protection;
+	private int attack;
 
-	public Warrior(Weapon weapon, int health, int protection, int attack) {
-		this.weapon = weapon;
+	public Warrior(WarriorType warriorType, int health, int protection, int attack) {
+		this.warriorType = warriorType;
 		this.health = health;
-	}
-
-	public Weapon getWeapon() {
-		return weapon;
-	}
-
-	public void setWeapon(Weapon weapon) {
-		this.weapon = weapon;
-	}
+	}	
 
 	public int getHealth() {
 		return health;
@@ -55,12 +33,28 @@ public class Warrior {
 		this.health = health;
 	}
 
+	public WarriorType getWarriorType() {
+		return warriorType;
+	}
+
+	public void setWarriorType(WarriorType warriorType) {
+		this.warriorType = warriorType;
+	}
+
 	public int getProtection() {
-		return weapon.getProtection();
+		return protection;
+	}
+
+	public void setProtection(int protection) {
+		this.protection = protection;
 	}
 
 	public int getAttack() {
-		return weapon.getAttack();
-	}	
+		return attack;
+	}
+
+	public void setAttack(int attack) {
+		this.attack = attack;
+	}
 
 }

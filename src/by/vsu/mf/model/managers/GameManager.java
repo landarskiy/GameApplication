@@ -3,6 +3,8 @@ package by.vsu.mf.model.managers;
 import by.vsu.mf.MainActivity;
 import by.vsu.mf.model.player.ResourceStorage;
 import by.vsu.mf.model.player.ResourceStorage.Resource;
+import by.vsu.mf.model.serviceobjects.Task;
+import by.vsu.mf.model.util.TaskCreator;
 import android.widget.TextView;
 
 
@@ -12,6 +14,7 @@ import android.widget.TextView;
  * @author Landarski Yauhen
  *
  */
+//TODO: почистить класс. он полон тестового дерьма
 public class GameManager implements Runnable{
 
 	private boolean isRunnung;
@@ -23,19 +26,42 @@ public class GameManager implements Runnable{
 		this.isRunnung = true;
 	}
 	
+	private class TextTask extends Task {
+		private MainActivity activity;
+		public TextTask(long performanceTime, TaskCreator taskCreator) {
+			super(performanceTime, taskCreator);
+			// TODO Auto-generated constructor stub
+		}
+		public void setActivity(MainActivity activity) {
+			this.activity = activity;
+		}
+		@Override
+		public void execute() {
+			activity.setText("Completed");			
+		}
+		
+	}
 	//TODO: почистить метод. Текущая реализация для тестирования работы
 	public void run() {
 		try {
 			int iteration = 0;
 			ResourceStorage storage = new ResourceStorage();
-			Thread.sleep(1000);
+			
+			TaskScheduler sheduler = new TaskScheduler();
+			Thread th = new Thread(sheduler);
+			th.start();
+			
+			TextTask tt = new TextTask(System.currentTimeMillis() + 10000, null);
+			tt.setActivity(activity);
+			
+			sheduler.addTask(tt);
 			while(isRunnung) {				
-				Thread.sleep(1000);
+				Thread.sleep(100);
 				storage.setResource(Resource.GOLD, iteration);
 				storage.setResource(Resource.HUMAN, iteration/2);
 				String txt = Integer.toString(storage.getResource(Resource.GOLD));
 				txt += ":" + Integer.toString(storage.getResource(Resource.HUMAN));
-				activity.setText(txt);
+				//activity.setText(txt);
 				if(iteration == Integer.MAX_VALUE) {
 					iteration = 0;
 				}

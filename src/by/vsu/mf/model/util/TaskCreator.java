@@ -1,5 +1,7 @@
 package by.vsu.mf.model.util;
 
+import by.vsu.mf.model.serviceobjects.Task;
+
 /**
  * Интерфейс создателя задачи
  * 
@@ -7,5 +9,5 @@ package by.vsu.mf.model.util;
  * 
  */
 public interface TaskCreator {
-	public void notifyAboutPerformance();
+	public void notifyAboutPerformance(Task task);
 }
