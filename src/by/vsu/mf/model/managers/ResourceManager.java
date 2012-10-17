@@ -11,7 +11,6 @@ import by.vsu.mf.model.buildings.Mine;
 /**
  * 
  * Менеджер ресурсов. Отвечает за своевременное извлечение ресурсов из шахт
- * TODO: реализовать как сингелтон
  * 
  * @author Landarski Yauhen
  * 

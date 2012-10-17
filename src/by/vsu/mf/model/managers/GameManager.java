@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 /**
  * Основной класс, отвечающий за бизнес логику игры.
+ * TODO: реализовать создание сервисов, работающих в других потоках в этом классе
  * 
  * @author Landarski Yauhen
  *
@@ -24,6 +25,13 @@ public class GameManager implements Runnable{
 	public GameManager(MainActivity activity) {
 		this.activity = activity;
 		this.isRunnung = true;
+		runServiceObjects();
+	}
+	
+	private void runServiceObjects() {
+		TaskScheduler sheduler = TaskScheduler.getInstance();
+		Thread th = new Thread(sheduler);
+		th.start();
 	}
 	
 	private class TextTask extends Task {
@@ -37,7 +45,7 @@ public class GameManager implements Runnable{
 		}
 		@Override
 		public void execute() {
-			activity.setText("Completed");			
+			activity.setText(Long.toString(System.currentTimeMillis()));			
 		}
 		
 	}
@@ -46,15 +54,12 @@ public class GameManager implements Runnable{
 		try {
 			int iteration = 0;
 			ResourceStorage storage = new ResourceStorage();
-			
-			TaskScheduler sheduler = new TaskScheduler();
-			Thread th = new Thread(sheduler);
-			th.start();
-			
+									
 			TextTask tt = new TextTask(System.currentTimeMillis() + 10000, null);
 			tt.setActivity(activity);
 			
-			sheduler.addTask(tt);
+			TaskScheduler.getInstance().addTask(tt);						
+			
 			while(isRunnung) {				
 				Thread.sleep(100);
 				storage.setResource(Resource.GOLD, iteration);

@@ -1,5 +1,6 @@
 package by.vsu.mf.model.managers;
 
+import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Stack;
 
@@ -7,25 +8,35 @@ import by.vsu.mf.model.serviceobjects.Task;
 
 /**
  * Планировщик задач. Отвечает за выполнение долгосрочных задач в срок. 
- * TODO: реализовать как сингелтон
  * 
  * @author Landarski Yauhen
  * 
  */
 public class TaskScheduler implements Runnable {
 
+	private static volatile TaskScheduler instance;
+	
 	private PriorityQueue<Task> tasks;	
-	private Stack<Task> executableTasks;
+	private TaskPerformer taskPerformer;
 	private boolean running;
 	private long interval;
 
-	public TaskScheduler() {
+	private TaskScheduler() {
 		this.tasks = new PriorityQueue<Task>();
-		this.executableTasks = new Stack<Task>();
 		this.running = true;
 		this.interval = 100;
+		runTaskPerfomer();
 	}
 
+	/**
+	 * Запуск исполнителя задач
+	 */
+	private void runTaskPerfomer() {
+		taskPerformer = new TaskPerformer();
+		Thread th = new Thread(taskPerformer);
+		th.start();
+	}
+	
 	public void addTask(Task task) {
 		tasks.add(task);
 	}
@@ -38,14 +49,8 @@ public class TaskScheduler implements Runnable {
 		long currentTime = System.currentTimeMillis();
 		while (!tasks.isEmpty()
 				&& tasks.peek().getPerformanceTime() <= currentTime) {
-			executableTasks.push(tasks.poll());
-		}
-		Task executeTask;
-		while (!executableTasks.isEmpty()) {
-			executeTask = executableTasks.pop();
-			executeTask.execute();
-			executeTask.getTaskCreator().notifyAboutPerformance(executeTask);
-		}
+			taskPerformer.addTask(tasks.poll());
+		}		
 	}
 
 	public void run() {
@@ -61,6 +66,18 @@ public class TaskScheduler implements Runnable {
 	}
 
 	public void terminate() {
+		taskPerformer.terminate();
 		this.running = false;
 	}
+	
+	public static TaskScheduler getInstance() {
+		if(instance == null) {
+			synchronized (TaskScheduler.class) {
+				if(instance == null) {
+					instance = new TaskScheduler();
+				}
+			}			
+		}
+		return instance;
+	}	
 }
